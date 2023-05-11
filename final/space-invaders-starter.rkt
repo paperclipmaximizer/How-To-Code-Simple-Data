@@ -177,7 +177,8 @@
                 (* TANK-SPEED (tank-dir g)))
                 (tank-dir g)))
 
-
+;; ListOfInvaders -> ListOfInvaders
+;; produces a list of moved, filters invaders
 (check-expect (next-invaders empty) empty)
 (check-expect (next-invaders (list I1)) (list
                                     (make-invader (+ (invader-x I1)
@@ -185,17 +186,42 @@
                                                   (+ (invader-y I1)
                                                      INVADER-Y-SPEED)
                                                   (invader-dx I1))))
-(define (next-invaders loi) loi)
-#;
-(define (advances loi)
+(define (next-invaders loi)
+  (advance-invaders (filter-invaders loi)))
+
+;; ListOfInvaders -> ListOfInvaders
+;; produces list of moved invaders
+(check-expect (next-invaders empty) empty)
+(check-expect (next-invaders (list I1)) (list
+                                    (make-invader (+ (invader-x I1)
+                                                     INVADER-X-SPEED)
+                                                  (+ (invader-y I1)
+                                                     INVADER-Y-SPEED)
+                                                  (invader-dx I1))))
+(define (advance-invaders loi)
   (cond [(empty? loi) empty]
         [else
-         (next-invader (first loi)
-                  (next-invaders (rest loi)))]))
+         (... (next-invader (first loi)
+                            (next-invaders (rest loi))))]))
 
+;; Invader -> Invader
+;; Consumes an invader produces a moved invader
+;; !!!
+(define (next-invader i) i)
 
-;;
+;; ListOfInvader -> ListOfInvader
+;; Consumes list of invaders and sorts them for collision
+;;!!!
+(define (filter-invaders loi) loi)
+
+;; ListOfMissile -> ListOfMissile
+;;!!!
 (define (next-missiles lom) lom) 
+
+;; Missile -> Missile
+;;  
+;;!!!
+(define (next-missile m) m)
 
 ;; GameState -> Image
 ;; render GameWorld 
@@ -231,4 +257,4 @@
 ;; Game -> ListOfMissile
 ;; shoots missile from tank
 ;; !!!
-(define (shoot-tank lom) (make-missile 0 0))
+;(define (shoot-tank g) (make-game (game-missile (make-missile 0 0))))
